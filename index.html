@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Para mi Mamá 🌻 Flores Amarillas</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Nunito:wght@400;600;800&family=Parisienne&display=swap');
+
+        /* Diseño Base Claro y Cálido */
+        body { 
+            margin: 0; padding: 0; 
+            background: linear-gradient(135deg, #fffdf0 0%, #ffec99 100%); 
+            font-family: 'Nunito', sans-serif; 
+            overflow-x: hidden; 
+            min-height: 100vh; 
+            color: #423828;
+            transition: background 0.8s ease, color 0.8s ease; 
+        }
+        
+        /* Pantalla Inicial */
+        #pantalla-inicio { 
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+            background: linear-gradient(135deg, #f59f00 0%, #f08c00 100%); 
+            display: flex; flex-direction: column; justify-content: center; align-items: center; 
+            z-index: 3000; transition: opacity 0.8s ease-out; 
+        }
+        #btn-comenzar { 
+            padding: 16px 45px; font-size: 20px; background: #fff; color: #d97706; 
+            border: none; border-radius: 50px; cursor: pointer; 
+            box-shadow: 0 8px 25px rgba(180, 83, 9, 0.35); font-weight: 800; 
+            animation: latido 1.5s infinite; 
+            transition: transform 0.2s;
+        }
+        #btn-comenzar:active { transform: scale(0.95); }
+
+        /* Animación del Ramo Sorpresa */
+        #ramo-sorpresa {
+            display: none;
+            font-size: 130px;
+            animation: popRamo 1.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+            filter: drop-shadow(0 15px 15px rgba(0,0,0,0.3));
+        }
+        @keyframes popRamo {
+            0% { transform: scale(0) rotate(-20deg); opacity: 0; }
+            50% { transform: scale(1.2) rotate(10deg); opacity: 1; }
+            100% { transform: scale(1) rotate(0deg); opacity: 1; }
+        }
+
+        /* Popup Romántico / Tierno */
+        #popup-romantico { 
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+            background: rgba(40, 30, 10, 0.85); z-index: 4000; 
+            justify-content: center; align-items: center; backdrop-filter: blur(5px); 
+        }
+        .popup-card { 
+            background: #fffdf5; padding: 30px; border-radius: 25px; max-width: 320px; 
+            text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.4); border: 2px solid #ffe066; 
+            animation: aparecerSubiendo 0.4s ease-out; 
+        }
+        .popup-card h2 { font-family: 'Dancing Script', cursive; color: #d97706; font-size: 28px; margin-bottom: 15px; }
+        .btn-activar { 
+            background: linear-gradient(135deg, #f59f00 0%, #f08c00 100%); color: white; 
+            border: none; padding: 12px 25px; border-radius: 20px; font-weight: 800; 
+            cursor: pointer; margin-bottom: 10px; width: 100%; 
+        }
+        .btn-omitir { background: transparent; color: #8c7c64; border: none; cursor: pointer; font-size: 14px; text-decoration: underline; }
+
+        /* Contenedor Principal */
+        #contenido-principal { 
+            display: none; padding: 20px; text-align: center; max-width: 550px; 
+            margin: 0 auto; padding-bottom: 80px; 
+        }
+        .container { 
+            background: rgba(255, 255, 255, 0.98); padding: 40px 25px; border-radius: 35px; 
+            box-shadow: 0 15px 35px rgba(217, 119, 6, 0.15); border: 2px solid #fff9db; 
+            transition: all 0.8s ease;
+        }
+        h1 { color: #b45309; font-size: 30px; font-family: 'Dancing Script', cursive; margin-bottom: 5px; transition: color 0.5s ease; }
+        .titulo-seccion { font-family: 'Dancing Script', cursive; font-size: 28px; color: #d97706; margin: 35px 0 15px 0; transition: color 0.5s ease; }
+
+        /* Poema Emotivo */
+        .frase-emotiva {
+            font-family: 'Dancing Script', cursive;
+            font-size: 24px;
+            color: #b45309;
+            margin: 25px 0;
+            padding: 20px;
+            border-top: 1px dashed #ffe066;
+            border-bottom: 1px dashed #ffe066;
+            background: rgba(255, 253, 245, 0.6);
+            border-radius: 12px;
+            transition: color 0.5s ease;
+            line-height: 1.4;
+        }
+
+        /* Medidor de Amor */
+        #medidor-amor { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 25px 0; }
+        .caja-valor { background: #fffdf5; padding: 15px 5px; border-radius: 15px; border: 1px solid #ffe066; box-shadow: 0 4px 6px rgba(0,0,0,0.05); transition: all 0.5s ease; display: flex; flex-direction: column; align-items: center; justify-content: center;}
+        .valor-destacado { font-size: 22px; font-weight: 800; color: #d97706; display: block; margin-bottom: 5px; transition: color 0.5s ease; }
+        .etiqueta-valor { font-size: 11px; color: #b45309; text-transform: uppercase; font-weight: 800; letter-spacing: 0.5px; transition: color 0.5s ease; }
+
+        /* Galería Estilo Polaroid */
+        .galeria-polaroid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin: 20px 0; padding: 10px; }
+        .polaroid { background: white; padding: 10px 10px 25px 10px; border-radius: 4px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); position: relative; transform: rotate(-2deg); transition: transform 0.3s; }
+        .polaroid:nth-child(even) { transform: rotate(2deg); }
+        .polaroid:hover { transform: scale(1.05) rotate(0deg); z-index: 10; }
+        .polaroid img { width: 100%; aspect-ratio: 1 / 1; object-fit: cover; border-radius: 2px; }
+        .lupa-polaroid { position: absolute; bottom: 8px; right: 15px; font-size: 20px; cursor: pointer; opacity: 0.7; }
+
+        /* Lightbox */
+        #lightbox { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 9999; justify-content: center; align-items: center; }
+        #lightbox img { max-width: 90%; max-height: 85vh; border-radius: 10px; box-shadow: 0 0 20px rgba(255,255,255,0.2); }
+        .cerrar-lightbox { position: absolute; top: 20px; right: 30px; font-size: 40px; color: white; cursor: pointer; }
+
+        /* Carta Extendida */
+        .carta-texto { 
+            color: #4a3e2c; line-height: 1.8; font-size: 17px; margin-bottom: 25px; text-align: left; 
+            padding: 25px; background: #fffdf5; border-radius: 15px; 
+            border-left: 4px solid #fcc419; box-shadow: 0 4px 15px rgba(0,0,0,0.03); transition: all 0.5s ease;
+        }
+        .cursor { display: inline-block; width: 2px; height: 18px; background: #b45309; animation: parpadeo 1s infinite; }
+        .firma { font-family: 'Parisienne', cursive; font-size: 38px; color: #b45309; text-align: right; padding-right: 20px; transition: color 0.5s ease; }
+
+        /* Sobres Secretos */
+        .sobre-secreto { 
+            background: #ffffff; border: 2px solid #ffe066; border-radius: 12px; padding: 18px; 
+            margin-bottom: 15px; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 4px 10px rgba(217, 119, 6, 0.1);
+        }
+        .sobre-tapa { font-weight: 800; color: #d97706; font-size: 17px; display: flex; justify-content: space-between; align-items: center; transition: color 0.5s ease; }
+        .sobre-texto { 
+            display: none; margin-top: 15px; color: #5d4037; font-size: 16px; line-height: 1.6;
+            border-top: 1px dashed #ffe066; padding-top: 15px; text-align: left; transition: color 0.5s ease;
+        }
+        .sobre-secreto.abierto { background: #fffdf5; transform: translateY(-3px); box-shadow: 0 8px 20px rgba(217, 119, 6, 0.2); }
+        .sobre-secreto.abierto .sobre-texto { display: block; animation: aparecerSubiendo 0.4s ease; }
+        .sobre-secreto.abierto .sobre-tapa span { transform: rotate(180deg); }
+
+        /* UI Extra: Botón Modo y Música */
+        .theme-switch { 
+            position: fixed; top: 20px; right: 20px; z-index: 2000; display: flex; align-items: center; gap: 10px; 
+            font-weight: 700; color: #78350f; background: rgba(255,255,255,0.8); padding: 8px 15px; border-radius: 20px; 
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1); cursor: pointer; transition: all 0.3s ease;
+        }
+        .theme-switch input { display: none; }
+        .theme-switch .slider { width: 40px; height: 20px; background-color: #e9ecef; border-radius: 20px; position: relative; border: 1px solid #fab005; }
+        .theme-switch .slider:before { content: ""; position: absolute; width: 16px; height: 16px; border-radius: 50%; background-color: #fab005; top: 1px; left: 2px; transition: 0.4s; }
+        .theme-switch input:checked + .slider { background-color: #fab005; }
+        .theme-switch input:checked + .slider:before { transform: translateX(19px); background-color: #1a1528; }
+        
+        #btn-musica { position: fixed; bottom: 20px; right: 20px; z-index: 2000; background: #d97706; color: white; border: none; border-radius: 50%; width: 55px; height: 55px; font-size: 24px; cursor: pointer; box-shadow: 0 4px 15px rgba(217, 119, 6, 0.4); }
+
+        /* MODO OSCURO PREMIUM */
+        body.dark-mode { background: linear-gradient(135deg, #1f1812 0%, #0d0a08 100%); color: #fdf6e3; }
+        .dark-mode .container { background: rgba(45, 35, 25, 0.95); border-color: #d97706; box-shadow: 0 15px 35px rgba(0,0,0,0.5); }
+        .dark-mode h1, .dark-mode .titulo-seccion, .dark-mode .valor-destacado, .dark-mode .firma { color: #fcc419; }
+        .dark-mode .etiqueta-valor { color: #e9dec9; }
+        .dark-mode p.subtitulo { color: #fdf6e3; }
+        
+        .dark-mode .frase-emotiva { color: #fcc419; background: rgba(58, 46, 34, 0.5); border-color: #fcc419; }
+        .dark-mode .caja-valor { background: #3a2e22; border-color: #fcc419; }
+        
+        .dark-mode .carta-texto { background: #3a2e22; color: #fdf6e3; border-left-color: #fcc419; }
+        .dark-mode .cursor { background: #fcc419; }
+        
+        .dark-mode .sobre-secreto { background: #3a2e22; border-color: #fcc419; }
+        .dark-mode .sobre-secreto.abierto { background: #4a3b2b; }
+        .dark-mode .sobre-tapa { color: #fcc419; }
+        .dark-mode .sobre-texto { color: #fdf6e3; border-top-color: #fcc419; }
+
+        .dark-mode .theme-switch { background: rgba(0,0,0,0.6); color: #fcc419; border: 1px solid #fcc419; }
+
+        /* Animaciones */
+        @keyframes latido { 0% { transform: scale(1); } 50% { transform: scale(1.05); } 100% { transform: scale(1); } }
+        @keyframes aparecerSubiendo { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes parpadeo { 0% { opacity: 1; } 50% { opacity: 0; } 100% { opacity: 1; } }
+        .flor-rain { position: fixed; top: -5vh; z-index: 1; animation: fall linear forwards; pointer-events: none; }
+        @keyframes fall { to { transform: translateY(105vh) rotate(360deg); } }
+    </style>
+</head>
+<body>
+
+    <!-- Lightbox de Fotos -->
+    <div id="lightbox" onclick="cerrarFoto()">
+        <span class="cerrar-lightbox">&times;</span>
+        <img id="lightbox-img" src="" alt="Foto Ampliada">
+    </div>
+
+    <!-- PANTALLA INICIO -->
+    <div id="pantalla-inicio">
+        <!-- Ramo Sorpresa Animado -->
+        <div id="ramo-sorpresa">💐🌻💐</div>
+
+        <div id="contenido-inicio">
+            <div style="font-size:75px; margin-bottom: 15px; animation: latido 2s infinite; text-align: center;">🌻</div>
+            <h1 style="color:white; font-family:'Nunito'; text-align: center; font-weight: 800;">Llegó el 21 de Septiembre...</h1>
+            <div style="text-align: center;">
+                <button id="btn-comenzar" onclick="abrirSorpresa()">🌻 RECIBIR FLORES 🌻</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- POPUP MODO ROMÁNTICO / TIERNO -->
+    <div id="popup-romantico">
+        <div class="popup-card">
+            <h2>¡Espera, Mamá! 🌻</h2>
+            <p style="color: #5d4037;">Para encender la magia y emocionarte, activa el Modo ✨</p>
+            <button class="btn-activar" onclick="activarModoRomantico()">¡Activar ahora!</button>
+            <button class="btn-omitir" onclick="cerrarPopup()">Ver normal</button>
+        </div>
+    </div>
+
+    <!-- CONTENIDO PRINCIPAL -->
+    <div id="contenido-principal">
+        
+        <label class="theme-switch" onclick="cambiarTema(event)">
+            Modo ✨
+            <input type="checkbox" id="darkModeToggle">
+            <span class="slider"></span>
+        </label>
+
+        <div class="container">
+            <h1>¡Feliz 21 de Septiembre,<br><span style="font-family:'Parisienne'; font-size: 44px;">Mamá María!</span></h1>
+            <p style="font-size:15px; font-weight:700; margin-top: -5px;" class="subtitulo">Para la mujer más maravillosa de mi vida 🌻</p>
+            
+            <!-- Poema Especial -->
+            <div class="frase-emotiva">
+                "Dicen que el amor más puro es el de una madre, pero yo digo que el amor más grande es el que yo siento por ti. Gracias por darme la vida y por ser mi guía."
+            </div>
+
+            <!-- Medidor de Amor Madre e Hijo -->
+            <div id="medidor-amor">
+                <div class="caja-valor">
+                    <span class="valor-destacado">∞</span>
+                    <span class="etiqueta-valor">Amor Incondicional</span>
+                </div>
+                <div class="caja-valor">
+                    <span class="valor-destacado">100%</span>
+                    <span class="etiqueta-valor">Paciencia Conmigo</span>
+                </div>
+                <div class="caja-valor">
+                    <span class="valor-destacado">Mil</span>
+                    <span class="etiqueta-valor">Abrazos Curativos</span>
+                </div>
+                <div class="caja-valor">
+                    <span class="valor-destacado">La Mejor</span>
+                    <span class="etiqueta-valor">Comida del Mundo</span>
+                </div>
+            </div>
+
+            <!-- Galería de Sthefano y María -->
+            <div class="titulo-seccion">Nuestros Momentos 📸</div>
+            
+            <div class="galeria-polaroid">
+                <div class="polaroid">
+                    <img src="IMG-20260921-WA0035.jpg" alt="Foto 1">
+                    <div class="lupa-polaroid" onclick="abrirFoto('IMG-20260921-WA0035.jpg')">🔍</div>
+                </div>
+                <div class="polaroid">
+                    <img src="IMG-20260921-WA0036.jpg" alt="Foto 2">
+                    <div class="lupa-polaroid" onclick="abrirFoto('IMG-20260921-WA0036.jpg')">🔍</div>
+                </div>
+                <div class="polaroid">
+                    <img src="IMG-20260921-WA0037.jpg" alt="Foto 3">
+                    <div class="lupa-polaroid" onclick="abrirFoto('IMG-20260921-WA0037.jpg')">🔍</div>
+                </div>
+                <div class="polaroid">
+                    <img src="IMG-20260921-WA0038.jpg" alt="Foto 4">
+                    <div class="lupa-polaroid" onclick="abrirFoto('IMG-20260921-WA0038.jpg')">🔍</div>
+                </div>
+            </div>
+
+            <!-- Carta Emotiva de Hijo a Madre -->
+            <div class="titulo-seccion">Para ti, Mamá</div>
+            <div class="carta-texto"><span id="texto-maquina"></span><span class="cursor" id="cursor"></span></div>
+            
+            <!-- FIRMA (CORREGIDA A STHEFANO) -->
+            <div class="firma">tu hijo, STHEFANO</div>
+
+            <!-- Sobres Secretos (Promesas) -->
+            <div class="titulo-seccion">Mensajes Secretos 💌</div>
+            <p style="font-size: 14px; margin-bottom: 20px;">(Toca cada sobre para descubrir qué guardan)</p>
+            
+            <div class="sobre-secreto" onclick="abrirSobre(this)">
+                <div class="sobre-tapa">💌 Promesa #1 <span style="transition:0.3s">▼</span></div>
+                <div class="sobre-texto">Prometo cuidarte siempre, de la misma manera amorosa e incondicional con la que tú me cuidaste a mí desde que nací. ❤️</div>
+            </div>
+            <div class="sobre-secreto" onclick="abrirSobre(this)">
+                <div class="sobre-tapa">💌 Promesa #2 <span style="transition:0.3s">▼</span></div>
+                <div class="sobre-texto">Prometo esforzarme todos los días para ser un gran hombre y hacerte sentir la madre más orgullosa del mundo. Todo lo que logro es gracias a ti. 🏡✨</div>
+            </div>
+            <div class="sobre-secreto" onclick="abrirSobre(this)">
+                <div class="sobre-tapa">💌 Promesa #3 <span style="transition:0.3s">▼</span></div>
+                <div class="sobre-texto">Prometo nunca soltar tu mano, pase lo que pase. Siempre seré tu niño y tú siempre serás mi refugio seguro. Te amo infinitamente, mamá. 🌻</div>
+            </div>
+
+            <div style="font-size: 35px; margin-top: 40px;">🌻🌼💛🌼🌻</div>
+        </div>
+    </div>
+
+    <!-- REPRODUCTOR DE AUDIO DE YOUTUBE (Soluciona el problema de peso) -->
+    <!-- Este div está oculto, pero permite que suene la canción de Josimar sin errores -->
+    <div id="youtube-audio" style="display: none;"></div>
+    <button id="btn-musica" onclick="toggleMusica()">🎵</button>
+
+    <script src="https://www.youtube.com/iframe_api"></script>
+    <script>
+        var textoCarta = "Mamá María:|Dicen que las flores amarillas representan la luz, la alegría y un amor que perdura para siempre. Por eso, este 21 de septiembre, no podía dejar de regalarte las tuyas, porque tú eres todo eso y mucho más en mi vida.|A veces las palabras no alcanzan para agradecerte todo lo que haces por mí. Gracias por tu paciencia infinita, por tus consejos sabios, por tus abrazos que curan cualquier pena y por creer en mí incluso cuando yo mismo dudo.|Quiero que sepas que eres lo más importante que tengo. Le pido a Dios que te cuide siempre y me permita disfrutar de ti muchísimos años más. Disfruta estas flores que nunca se marchitarán, igual que mi amor por ti.|Te amo con todo mi corazón, mamá.";
+        var indexTyping = 0;
+        var typingIniciado = false;
+        
+        // CONFIGURACIÓN DEL AUDIO DE JOSIMAR
+        var player;
+        var isPlaying = false;
+        
+        function onYouTubeIframeAPIReady() {
+            player = new YT.Player('youtube-audio', {
+                height: '0',
+                width: '0',
+                videoId: 'pKe36DY4bcY', // ID de la canción de Josimar - Madre
+                playerVars: {
+                    'autoplay': 0,
+                    'controls': 0,
+                    'loop': 1,
+                    'playlist': 'pKe36DY4bcY', // Necesario para loop
+                    'showinfo': 0,
+                    'modestbranding': 1
+                },
+                events: {
+                    'onReady': onPlayerReady
+                }
+            });
+        }
+
+        function onPlayerReady(event) {
+            // El reproductor está listo, pero no arranca hasta que ella presione el botón
+        }
+
+        function reproducirAudioSeguro() {
+            if (player && typeof player.playVideo === 'function') {
+                player.playVideo();
+                isPlaying = true;
+                document.getElementById('btn-musica').innerText = '🎵';
+            }
+        }
+
+        function abrirSorpresa() {
+            reproducirAudioSeguro();
+            
+            // Ocultar botón y texto, mostrar ramo animado
+            document.getElementById('contenido-inicio').style.display = 'none';
+            document.getElementById('ramo-sorpresa').style.display = 'block';
+
+            // Esperar a que pase la animación del ramo (2.5 segundos) y luego ir al contenido
+            setTimeout(function() {
+                document.getElementById('pantalla-inicio').style.opacity = '0';
+                setTimeout(function() {
+                    document.getElementById('pantalla-inicio').style.display = 'none';
+                    document.getElementById('popup-romantico').style.display = 'flex';
+                }, 800);
+            }, 2500);
+        }
+
+        function activarModoRomantico() {
+            document.body.classList.add('dark-mode');
+            var toggle = document.getElementById('darkModeToggle');
+            if(toggle) toggle.checked = true;
+            cerrarPopup();
+        }
+
+        function cerrarPopup() {
+            reproducirAudioSeguro();
+            
+            document.getElementById('popup-romantico').style.display = 'none';
+            document.getElementById('contenido-principal').style.display = 'block';
+            
+            if(!typingIniciado){
+                typingIniciado = true;
+                escribirCarta();
+            }
+        }
+
+        function cambiarTema(event) {
+            if(event.target.tagName !== 'INPUT') return; 
+            document.body.classList.toggle('dark-mode');
+        }
+
+        function abrirFoto(src) {
+            document.getElementById('lightbox-img').src = src;
+            document.getElementById('lightbox').style.display = 'flex';
+        }
+        function cerrarFoto() { document.getElementById('lightbox').style.display = 'none'; }
+        
+        function abrirSobre(el) { el.classList.toggle('abierto'); }
+        
+        function toggleMusica() {
+            if (player && typeof player.getPlayerState === 'function') {
+                if (isPlaying) {
+                    player.pauseVideo();
+                    isPlaying = false;
+                    document.getElementById('btn-musica').innerText = '🔇';
+                } else {
+                    player.playVideo();
+                    isPlaying = true;
+                    document.getElementById('btn-musica').innerText = '🎵';
+                }
+            }
+        }
+
+        function escribirCarta() {
+            if (indexTyping < textoCarta.length) {
+                var char = textoCarta.charAt(indexTyping);
+                if(char === '|') {
+                    document.getElementById("texto-maquina").innerHTML += "<br><br>";
+                } else {
+                    document.getElementById("texto-maquina").innerHTML += char;
+                }
+                indexTyping++;
+                setTimeout(escribirCarta, 45);
+            } else {
+                var cursor = document.getElementById('cursor');
+                if(cursor) cursor.style.display = 'none';
+            }
+        }
+
+        // Lluvia de Flores 
+        setInterval(function() {
+            var flor = document.createElement('div');
+            flor.classList.add('flor-rain');
+            var items = ['🌻', '🌼', '💛'];
+            flor.innerHTML = items[Math.floor(Math.random() * items.length)];
+            flor.style.left = Math.random() * 100 + 'vw';
+            flor.style.fontSize = (Math.random() * 12 + 16) + 'px';
+            flor.style.animationDuration = Math.random() * 3 + 4 + 's';
+            document.body.appendChild(flor);
+            setTimeout(function() { flor.remove(); }, 7000);
+        }, 500);
+    </script>
+</body>
+</html>
